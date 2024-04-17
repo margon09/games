@@ -1,8 +1,10 @@
 import axios from "axios"
 
+const API_KEY = process.env.REACT_APP_GAMES_API_KEY
+
 export default axios.create({
   baseURL: 'https://api.rawg.io/api',
   params: {
-    key: '9584d3ca861b4e9f84eb5cc295ab4b39'
+    key: API_KEY
   }
 })
