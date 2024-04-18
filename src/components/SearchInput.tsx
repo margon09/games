@@ -67,10 +67,7 @@ const SearchInput = ({onSearch}: Props) => {
           }}
           onFocus={() => setIsFocused(true)}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => {
-              setIsHovered(false)
-              setIsFocused(false)
-            }}
+          onMouseLeave={() => setIsHovered(false)}
         />
         <InputRightElement color='gray.500' width={isFocused || isHovered ? '5%' : '10%'}>
           {isFocused || isHovered ? (
