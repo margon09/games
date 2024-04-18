@@ -9,14 +9,14 @@ interface Props {
 const SearchInput = ({onSearch}: Props) => {
   const ref = useRef<HTMLInputElement>(null)
   return (
-    <HStack marginLeft={{lg: '175px', xl: '225px'}} marginRight={5} width='100%'>
+    <HStack marginLeft={{lg: '175px', xl: '225px'}} marginRight={{base: '5px', lg: '20px'}} width='100%'>
     <form onSubmit={(event) => {
       event.preventDefault()
       if(ref.current) onSearch(ref.current.value)
     }}>
       <InputGroup>
         <InputLeftElement children={<BsSearch />} />
-        <Input ref={ref} borderRadius={20} placeholder='Search games...' variant='filled'/>
+        <Input ref={ref} borderRadius={17} placeholder='Search games...' variant='filled'/>
       </InputGroup>
     </form>
     </HStack>
