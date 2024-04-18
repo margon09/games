@@ -13,7 +13,7 @@ const GameCard = ({game}: Props) => {
   return (
     <Card>
       <Image src={getCroppedImageUrl(game.background_image)}/>
-      <CardBody maxHeight= '182px'>
+      <CardBody maxHeight= '182px' minHeight= '182px'>
         <HStack justifyContent='space-between' marginBottom={3}>
           {game.parent_platforms?.length > 0 && (
             <PlatformIconList platforms={game.parent_platforms.map(p => p.platform)}/>
