@@ -1,12 +1,16 @@
 import { Button, HStack, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { BsSearch, BsX } from 'react-icons/bs'
+import useWindowSize from '../hooks/useWindowSize'
 
 interface Props {
   onSearch: (searchText: string) => void
 }
 
 const SearchInput = ({ onSearch }: Props) => {
+  const {width} = useWindowSize()
+  const isDesktop = width > 599
+  
   const ref = useRef<HTMLInputElement>(null)
   const [isFocused, setIsFocused] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -43,7 +47,8 @@ const SearchInput = ({ onSearch }: Props) => {
   return (
     <HStack
       marginLeft={{ lg: '175px', xl: '225px' }}
-      marginRight={{ base: '5px', lg: '20px' }} width='100%'
+      marginRight={{ base: '5px', lg: '20px' }} 
+      width='100%'
     >
       <form
         onSubmit={(event) => {
@@ -53,15 +58,15 @@ const SearchInput = ({ onSearch }: Props) => {
       >
         <InputGroup>
           <InputLeftElement
-            children={<BsSearch fontSize="18px" />}
-            color="gray.500"
+            className='leftInputElement'
+            children={<BsSearch className='searchBtn'/>}
           />
           <Input
             ref={ref}
             value={inputValue}
             onChange={handleChange}
             borderRadius={17}
-            placeholder='Search games...'
+            placeholder={isFocused ? '' : isDesktop ? 'Search games...' : 'Search'}
             variant='filled'
             bg="gray.650"
             _focus={{ bg: "gray.100", color: "black" }}
@@ -71,7 +76,10 @@ const SearchInput = ({ onSearch }: Props) => {
                 color: 'gray.500',
               },
             }}
-            onFocus={() => setIsFocused(true)}
+            onFocus={() => {
+              setIsFocused(true)
+              ref.current?.focus()
+            }}
             onBlur={() => {
               setIsFocused(false)
             }}
@@ -79,50 +87,46 @@ const SearchInput = ({ onSearch }: Props) => {
             onMouseLeave={() => {
               setIsHovered(false)
               setIsFocused(false)
+              ref.current?.blur()
             }}
           />
-          <InputRightElement color='gray.500' width={isFocused || isHovered || inputValue ? '5%' : '10%'}>
-            {(isFocused || isHovered || inputValue) && (
-              <BsX
-                fontSize='32px'
-                onClick={handleClear}
-                style={{ cursor: 'pointer' }}
-              />
-            )}
-            {!isFocused && !isHovered && !inputValue && (
-              <HStack gap='0.2rem'>
-                <Button
-                  height='25px'
-                  padding='2px'
-                  variant="outline"
-                  borderRadius="4px"
-                  border="1px"
-                  borderColor="gray.500"
-                  color="gray.500"
-                  fontFamily="'Courier New', Courier, monospace"
-                  fontSize='12px'
-                  style={{ cursor: 'auto' }}
-                >
-                  alt
-                </Button>
-                <Text>+</Text>
-                <Button
-                  height='25px'
-                  padding='4px'
-                  variant="outline"
-                  borderRadius="4px"
-                  border="1px"
-                  borderColor="gray.500"
-                  color="gray.500"
-                  fontFamily="'Courier New', Courier, monospace"
-                  fontSize='12px'
-                  style={{ cursor: 'auto' }}
-                >
-                  enter
-                </Button>
-              </HStack>
-            )}
-          </InputRightElement>
+          {
+            isDesktop ?
+              <InputRightElement className='rightInputElement1'>
+              {(isFocused || isHovered || inputValue) && (
+                <BsX
+                  className='xBtn'
+                  onClick={handleClear}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+              {!isFocused && !isHovered && !inputValue && (
+                <HStack gap='0.2rem'>
+                  <Button
+                    className='btn1'
+                    variant="outline"
+                  >
+                    alt
+                  </Button>
+                  <Text>+</Text>
+                  <Button
+                    className='btn2'
+                    variant="outline"
+                  >
+                    enter
+                  </Button>
+                </HStack>
+              )}
+              </InputRightElement>
+              :
+              <InputRightElement className='rightInputElement2'>
+                <BsX
+                  className='xBtn'
+                  onClick={handleClear}
+                  style={{ cursor: 'pointer' }}
+                />
+                </InputRightElement>
+          }
         </InputGroup>
       </form>
     </HStack>
