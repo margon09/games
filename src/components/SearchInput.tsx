@@ -56,7 +56,7 @@ const SearchInput = ({ onSearch }: Props) => {
           if (ref.current) onSearch(inputValue)
         }}
       >
-        <InputGroup>
+        <InputGroup marginLeft={{ base: '10px', lg: '0' }}>
           <InputLeftElement
             className='leftInputElement'
             children={<BsSearch className='searchBtn'/>}
