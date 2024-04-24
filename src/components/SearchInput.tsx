@@ -68,7 +68,6 @@ const SearchInput = ({ onSearch }: Props) => {
             borderRadius={17}
             placeholder={isFocused ? '' : isDesktop ? 'Search games...' : 'Search'}
             variant='filled'
-            bg="gray.650"
             _focus={{ bg: "gray.100", color: "black" }}
             _hover={{ bg: "gray.100", color: "black" }}
             sx={{
