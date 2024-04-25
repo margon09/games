@@ -2,16 +2,15 @@ import { Button, HStack, Input, InputGroup, InputLeftElement, InputRightElement,
 import { useEffect, useRef, useState } from 'react'
 import { BsSearch, BsX } from 'react-icons/bs'
 import useWindowSize from '../hooks/useWindowSize'
+import useGameQueryStore from '../store'
 
-interface Props {
-  onSearch: (searchText: string) => void
-}
-
-const SearchInput = ({ onSearch }: Props) => {
+const SearchInput = () => {
   const {width} = useWindowSize()
   const isDesktop = width > 599
   
   const ref = useRef<HTMLInputElement>(null)
+  const setSearchText = useGameQueryStore(s => s.setSearchText)
+
   const [isFocused, setIsFocused] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [inputValue, setInputValue] = useState('')
@@ -33,10 +32,20 @@ const SearchInput = ({ onSearch }: Props) => {
       }
     }
 
+    const handleDelete = (event: KeyboardEvent) => {
+    if (event.key === 'Delete') {
+      if (ref.current) {
+        ref.current.value = ''
+      }
+    }
+  }
+
     document.addEventListener('keydown', handleAltEnter)
+    document.addEventListener('keydown', handleDelete)
 
     return () => {
       document.removeEventListener('keydown', handleAltEnter)
+      document.removeEventListener('keydown', handleDelete)
     }
   }, [])
 
@@ -53,7 +62,7 @@ const SearchInput = ({ onSearch }: Props) => {
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          if (ref.current) onSearch(inputValue)
+          if (ref.current) setSearchText(inputValue)
         }}
       >
         <InputGroup marginLeft={{ base: '10px', lg: '0' }}>
@@ -93,11 +102,13 @@ const SearchInput = ({ onSearch }: Props) => {
             isDesktop ?
               <InputRightElement className='rightInputElement1'>
               {(isFocused || isHovered || inputValue) && (
+                <HStack gap='0.2rem'>
                 <BsX
                   className='xBtn'
                   onClick={handleClear}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer'}}
                 />
+                  </HStack>
               )}
               {!isFocused && !isHovered && !inputValue && (
                 <HStack gap='0.2rem'>
@@ -119,12 +130,25 @@ const SearchInput = ({ onSearch }: Props) => {
               </InputRightElement>
               :
               <InputRightElement className='rightInputElement2'>
-                <BsX
-                  className='xBtn'
-                  onClick={handleClear}
-                  style={{ cursor: 'pointer' }}
-                />
-                </InputRightElement>
+                  <BsX
+                    className='xBtn'
+                    onClick={handleClear}
+                    style={{ cursor: 'pointer' }}
+                  />
+                <Button
+                  className='btn2'
+                  variant="outline"
+                  onClick={(event) => {
+                    if (!isDesktop) {
+                      event.preventDefault()
+                      if (ref.current) setSearchText(inputValue)
+                    }
+                  }}
+                  style={{marginRight: '2rem'}}
+                >
+                  enter
+                </Button>
+              </InputRightElement>
           }
         </InputGroup>
       </form>

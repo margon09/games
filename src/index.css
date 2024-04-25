@@ -18,7 +18,7 @@ form {
 .btn1 {
   height: 25px !important;
   padding: 2px !important;
-  border-radius: 4px !important;
+  border-radius: 5px !important;
   color: var(--chakra-colors-gray-500) !important;
   border: 1px solid var(--chakra-colors-gray-500) !important;
   font-family: 'Courier New', Courier, monospace !important;
@@ -28,7 +28,7 @@ form {
 .btn2 {
   height: 25px !important;
   padding: 4px !important;
-  border-radius: 4px !important;
+  border-radius: 5px !important;
   color: var(--chakra-colors-gray-500) !important;
   border: 1px solid var(--chakra-colors-gray-500) !important;
   font-family: 'Courier New', Courier, monospace !important;
