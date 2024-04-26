@@ -1,15 +1,21 @@
-import { Button, HStack, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, MouseEvent } from 'react'
+import {Button, HStack, Input, InputGroup, InputLeftElement, InputRightElement, Text, useToast } from '@chakra-ui/react'
+import {  useRef, useState } from 'react'
 import { BsSearch, BsX } from 'react-icons/bs'
 import useWindowSize from '../hooks/useWindowSize'
 import useGameQueryStore from '../store'
+import CustomToast from './UI/CustomToast'
+import useKeyboardEvents from '../hooks/useKeyboardEvents'
+
 
 const SearchInput = () => {
   const {width} = useWindowSize()
   const isDesktop = width > 599
-  
+
   const ref = useRef<HTMLInputElement>(null)
   const setSearchText = useGameQueryStore(s => s.setSearchText)
+  
+  const toast = useToast()
 
   const [isFocused, setIsFocused] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -22,35 +28,45 @@ const SearchInput = () => {
     }
   }
 
-  useEffect(() => {
-    const handleAltEnter = (event: KeyboardEvent) => {
-      if (event.altKey && event.key === 'Enter') {
-        if (ref.current) {
-          ref.current.focus()
-          setIsFocused(true)
-        }
-      }
-    }
-
-    const handleDelete = (event: KeyboardEvent) => {
-    if (event.key === 'Delete') {
+  useKeyboardEvents({
+    'Alt+Enter': () => {
       if (ref.current) {
-        ref.current.value = ''
+        ref.current.focus()
+        setIsFocused(true)
+      }
+    },
+    Delete: () => {
+      if (ref.current) {
+        handleClear()
       }
     }
+  })
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value)
   }
 
-    document.addEventListener('keydown', handleAltEnter)
-    document.addEventListener('keydown', handleDelete)
+  const showToast = () => {
+    toast({
+      position: 'top',
+      duration: 3000,
+      render: () => (
+        <CustomToast
+          title="Empty Input"
+          description="Please enter a search query."
+          isClosable={true}
+        />
+      ),
+    })
+  }
 
-    return () => {
-      document.removeEventListener('keydown', handleAltEnter)
-      document.removeEventListener('keydown', handleDelete)
+  const handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    if (inputValue.trim() === '') {
+      showToast()
+    } else {
+      if (ref.current) setSearchText(inputValue)
     }
-  }, [])
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value)
   }
 
   return (
@@ -59,12 +75,7 @@ const SearchInput = () => {
       marginRight={{ base: '5px', lg: '20px' }} 
       width='100%'
     >
-      <form
-        onSubmit={(event) => {
-          event.preventDefault()
-          if (ref.current) setSearchText(inputValue)
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <InputGroup marginLeft={{ base: '10px', lg: '0' }}>
           <InputLeftElement
             className='leftInputElement'
@@ -138,12 +149,7 @@ const SearchInput = () => {
                 <Button
                   className='btn2'
                   variant="outline"
-                  onClick={(event) => {
-                    if (!isDesktop) {
-                      event.preventDefault()
-                      if (ref.current) setSearchText(inputValue)
-                    }
-                  }}
+                  onClick={handleSubmit}
                   style={{marginRight: '2rem'}}
                 >
                   enter
