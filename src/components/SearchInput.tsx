@@ -89,7 +89,8 @@ const SearchInput = () => {
             placeholder={isFocused ? '' : isDesktop ? 'Search games...' : 'Search'}
             variant='filled'
             _focus={{ bg: "gray.100", color: "black" }}
-            _hover={{ bg: "gray.100", color: "black" }}
+            _hover={{ bg: "gray.100", color: "black", transition: 'all .5s ease-in' }}
+            transition='all .7s ease-out'
             sx={{
               '&::placeholder': {
                 color: 'gray.500',

@@ -6,10 +6,6 @@ import SortSelector from '../components/SortSelector'
 import GameGrid from '../components/GameGrid'
 
 const HomePage = () => {
-  //  const { colorMode } = useColorMode()
-
-  // const bgColor = colorMode === 'dark' ? 'gray.800' : 'gray.50'
-
   return (
     <Grid templateAreas={{
       base: `"main"`,
@@ -22,9 +18,6 @@ const HomePage = () => {
       '2xl': '300px 1fr', 
     }}
     >
-      {/* <GridItem area='nav' className='gridItem' backgroundColor={bgColor}>
-        <NavBar />
-      </GridItem> */}
       <Show above='lg'>
         <GridItem area='aside' paddingX={5}>
           <GenreList />
