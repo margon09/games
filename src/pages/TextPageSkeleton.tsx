@@ -1,5 +1,4 @@
-import { Grid, GridItem, Show, Center, HStack, VStack, Heading, Text, useColorMode } from "@chakra-ui/react"
-import NavBar from "../components/NavBar"
+import { Grid, GridItem, Show, HStack, VStack, Heading, Text, useColorMode } from "@chakra-ui/react"
 
 interface Props {
   heading: string
@@ -11,7 +10,7 @@ const TextPageSkeleton = ({ heading, text }: Props) => {
 
   return (
     <>
-      <NavBar />
+
       <Grid
         templateAreas={{
           base: `"main"`,
@@ -29,25 +28,25 @@ const TextPageSkeleton = ({ heading, text }: Props) => {
         </Show>
         <GridItem
           area='main'
-          paddingRight={5}
-          paddingLeft={{ base: '20px', md: '20px', lg: '0' }}
           marginRight={{ base: '0', md: '0', lg: '10rem' }}
         >
-          <Center height={{ base: '95vh', md: '98vh' }}>
             <HStack
-              padding="4rem"
+              padding={{ base: '1rem', md: '4rem' }}
               backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
               color='gray.500' borderRadius="md"
-              spacing={4} width='100%'>
+              spacing={4} 
+              width='100%'
+            >
               <VStack
                 align="center"
                 padding={{ base: '0', md: '4rem' }}
-                spacing={4} width='100%'>
+                spacing={4}
+                width='100%'
+              >
                 <Heading as='h1'>{heading}</Heading>
                 <Text>{text}</Text>
               </VStack>
             </HStack>
-          </Center>
         </GridItem>
       </Grid>
     </>

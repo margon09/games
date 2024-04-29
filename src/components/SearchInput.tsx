@@ -76,7 +76,7 @@ const SearchInput = () => {
       width='100%'
     >
       <form onSubmit={handleSubmit}>
-        <InputGroup marginLeft={{ base: '10px', lg: '0' }}>
+        <InputGroup marginLeft={{base: '0', md: '0.5rem'}}>
           <InputLeftElement
             className='leftInputElement'
             children={<BsSearch className='searchBtn'/>}
@@ -88,7 +88,8 @@ const SearchInput = () => {
             borderRadius={17}
             placeholder={isFocused ? '' : isDesktop ? 'Search games...' : 'Search'}
             variant='filled'
-            _focus={{ bg: "gray.100", color: "black" }}
+            focusBorderColor='blue.600'
+            _focus={{ bg: "gray.100", color: "black"}}
             _hover={{ bg: "gray.100", color: "black", transition: 'all .5s ease-in' }}
             transition='all .7s ease-out'
             sx={{

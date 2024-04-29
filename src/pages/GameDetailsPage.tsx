@@ -1,6 +1,24 @@
+import { useParams } from "react-router-dom"
+import useGame from "../hooks/useGame"
+import { Spinner } from "@chakra-ui/react"
+import TextPageSkeleton from "./TextPageSkeleton"
+
 const GameDetailsPage = () => {
+  const {slug} = useParams()
+  // this const/slug will never be null
+  const {data: game, isLoading, error} = useGame(slug!)
+
+  if(isLoading) return <Spinner />
+
+  if(error || !game) throw error
+  
   return (
-    <div>GameDetailsPage</div>
+    <>
+      <TextPageSkeleton
+        heading={game.name}
+        text={game.description_raw}
+      />
+    </>
   )
 }
 

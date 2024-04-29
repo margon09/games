@@ -18,7 +18,7 @@ const GameCard = ({game}: Props) => {
       bg={cardBg}
       _hover={{
         transform: 'scale(1.05)',
-        transition: 'transform .3s ease-in',
+        transition: 'transform .6s ease-in',
       }}
       transition='all 0.6s ease-out'
     >
