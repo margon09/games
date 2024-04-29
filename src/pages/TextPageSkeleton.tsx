@@ -1,11 +1,14 @@
-import { Grid, GridItem, Show, HStack, VStack, Heading, Text, useColorMode } from "@chakra-ui/react"
+import { Grid, GridItem, Show, HStack, VStack, Heading, useColorMode, Spinner } from "@chakra-ui/react"
+import ExpandableText from "../components/ExpandableText"
+import { ReactNode } from "react"
 
 interface Props {
-  heading: string
-  text: string
+  heading?: string
+  text?: string
+  spinner?: ReactNode | null
 }
 
-const TextPageSkeleton = ({ heading, text }: Props) => {
+const TextPageSkeleton = ({ heading, text, spinner }: Props) => {
   const { colorMode } = useColorMode()
 
   return (
@@ -43,8 +46,11 @@ const TextPageSkeleton = ({ heading, text }: Props) => {
                 spacing={4}
                 width='100%'
               >
+                {spinner && (
+                  <Spinner />
+                )}
                 <Heading as='h1'>{heading}</Heading>
-                <Text>{text}</Text>
+                <ExpandableText>{text}</ExpandableText>
               </VStack>
             </HStack>
         </GridItem>

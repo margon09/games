@@ -1,7 +1,7 @@
 
 
 export interface Platform {
-  id: number;
-  name: string;
-  slug: string;
+  id: number
+  name: string
+  slug: string
 }

@@ -8,17 +8,21 @@ const GameDetailsPage = () => {
   // this const/slug will never be null
   const {data: game, isLoading, error} = useGame(slug!)
 
-  if(isLoading) return <Spinner />
+  if (isLoading) {
+    return (
+      <TextPageSkeleton
+        spinner={<Spinner />}
+      />
+    )
+  }
 
   if(error || !game) throw error
   
   return (
-    <>
       <TextPageSkeleton
         heading={game.name}
         text={game.description_raw}
       />
-    </>
   )
 }
 
