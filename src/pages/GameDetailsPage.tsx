@@ -1,28 +1,66 @@
+import { Grid, GridItem, Show, HStack, VStack, Heading, useColorMode, Spinner } from "@chakra-ui/react"
 import { useParams } from "react-router-dom"
 import useGame from "../hooks/useGame"
-import { Spinner } from "@chakra-ui/react"
-import TextPageSkeleton from "./TextPageSkeleton"
+import ExpandableText from "../components/ExpandableText"
+import GameAttributes from "../components/GameAttributes"
 
 const GameDetailsPage = () => {
+  const { colorMode } = useColorMode()
   const {slug} = useParams()
-  // this const/slug will never be null
   const {data: game, isLoading, error} = useGame(slug!)
 
-  if (isLoading) {
-    return (
-      <TextPageSkeleton
-        spinner={<Spinner />}
-      />
-    )
+  if (error) {
+    throw error
   }
 
-  if(error || !game) throw error
-  
   return (
-      <TextPageSkeleton
-        heading={game.name}
-        text={game.description_raw}
-      />
+    <>
+      <Grid
+        templateAreas={{
+          base: `"main"`,
+          lg: `"aside main"`
+        }}
+        templateColumns={{
+          base: '1fr',
+          lg: '250px 1fr',
+          xl: '300px 1fr',
+          '2xl': '300px 1fr',
+        }}
+      >
+        <Show above='lg'>
+          <GridItem area='aside' paddingX={5}></GridItem>
+        </Show>
+        <GridItem
+          area='main'
+          marginRight={{ base: '0', md: '0', lg: '10rem' }}
+        >
+          <HStack
+            padding={{ base: '1rem', md: '4rem' }}
+            backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+            color='gray.500' borderRadius="md"
+            spacing={4} 
+            width='100%'
+          >
+            <VStack
+              align="center"
+              justify="center"
+              padding={{ base: '0', md: '4rem' }}
+              spacing={4}
+              width='100%'
+            >
+              {(isLoading || !game) && <Spinner />}
+              {!isLoading && game && (
+                <>
+                  <Heading as='h1' width='100%'>{game.name}</Heading>
+                  <ExpandableText>{game.description_raw}</ExpandableText>
+                  <GameAttributes game={game}/>
+                </>
+              )}
+            </VStack>
+          </HStack>
+        </GridItem>
+      </Grid>
+    </>
   )
 }
 
