@@ -1,4 +1,4 @@
-import { Grid, GridItem, Show, HStack, VStack, Heading, useColorMode, Spinner } from "@chakra-ui/react"
+import { Grid, GridItem, Show, HStack, VStack, Heading, useColorMode, Spinner, SimpleGrid, Box } from "@chakra-ui/react"
 import { useParams } from "react-router-dom"
 import useGame from "../hooks/useGame"
 import ExpandableText from "../components/ExpandableText"
@@ -53,13 +53,27 @@ const GameDetailsPage = () => {
             >
               {(isLoading || !game) && <Spinner />}
               {!isLoading && game && (
-                <>
-                  <Heading as='h1' width='100%'>{game.name}</Heading>
-                  <ExpandableText>{game.description_raw}</ExpandableText>
-                  <GameAttributes game={game}/>
-                  <GameTrailer gameId={game.id}/>
-                  <GameScreenshots gameId={game.id}/>
-                </>
+                <SimpleGrid columns={{base: 1, '2xl': 2}} gap={5}>
+                  <GridItem>
+                    <Heading as='h1' width='100%' marginBottom={2}>{game.name}</Heading>
+                    <ExpandableText>{game.description_raw}</ExpandableText>
+                    <Box marginTop={5}>
+                      <GameAttributes game={game}/>
+                    </Box>
+                  </GridItem>
+                  <GridItem>
+                    <GameTrailer gameId={game.id}/>
+                    <GameScreenshots gameId={game.id}/>
+                  </GridItem>
+                </SimpleGrid>
+
+                // <>
+                //   <Heading as='h1' width='100%'>{game.name}</Heading>
+                //   <ExpandableText>{game.description_raw}</ExpandableText>
+                //   <GameAttributes game={game}/>
+                //   <GameTrailer gameId={game.id}/>
+                //   <GameScreenshots gameId={game.id}/>
+                // </>
               )}
             </VStack>
           </HStack>

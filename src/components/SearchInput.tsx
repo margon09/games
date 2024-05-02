@@ -6,6 +6,7 @@ import useWindowSize from '../hooks/useWindowSize'
 import useGameQueryStore from '../store'
 import CustomToast from './UI/CustomToast'
 import useKeyboardEvents from '../hooks/useKeyboardEvents'
+import { useNavigate } from 'react-router-dom'
 
 
 const SearchInput = () => {
@@ -16,6 +17,8 @@ const SearchInput = () => {
   const setSearchText = useGameQueryStore(s => s.setSearchText)
   
   const toast = useToast()
+
+  const navigate = useNavigate()
 
   const [isFocused, setIsFocused] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -65,7 +68,10 @@ const SearchInput = () => {
     if (inputValue.trim() === '') {
       showToast()
     } else {
-      if (ref.current) setSearchText(inputValue)
+      if (ref.current) {
+        setSearchText(inputValue)
+        navigate('/')
+      }
     }
   }
 
