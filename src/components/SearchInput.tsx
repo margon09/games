@@ -71,7 +71,6 @@ const SearchInput = () => {
 
   return (
     <HStack
-      marginLeft={{ lg: '175px', xl: '225px' }}
       marginRight={{ base: '5px', lg: '20px' }} 
       width='100%'
     >
@@ -152,7 +151,7 @@ const SearchInput = () => {
                   className='btn2'
                   variant="outline"
                   onClick={handleSubmit}
-                  style={{marginRight: '2rem'}}
+                  style={{marginRight: '1.5rem'}}
                 >
                   enter
                 </Button>

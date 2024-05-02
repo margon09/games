@@ -2,9 +2,12 @@ body {
   padding: 0 30px 10px 30px;
 }
 
-h1, h2 {
-  margin-top: 30px !important;
+@media only screen and (min-width: 3000px) {
+  body {
+    padding: 0 20rem 10px 20rem;
+  }
 }
+
 
 form {
   width: 100%;
@@ -56,4 +59,19 @@ form {
 }
 .leftInputElement {
   color: var(--chakra-colors-gray-500) !important;
+}
+
+.filtersContainer {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: 0.7s;
+  transition-property: opacity, height ease-in-out;
+
+}
+
+.filtersContainer.visible {
+  opacity: 1;
+  height: 8.5rem;
+  overflow: visible;
 }

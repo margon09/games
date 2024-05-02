@@ -1,11 +1,20 @@
-import { Grid, GridItem, HStack, Show } from '@chakra-ui/react'
+import { Box, Grid, GridItem, HStack, Show, useColorMode } from '@chakra-ui/react'
 import GenreList from '../components/GenreList'
 import GameHeading from '../components/GameHeading'
 import PlatformSelector from '../components/PlatformSelector'
 import SortSelector from '../components/SortSelector'
 import GameGrid from '../components/GameGrid'
+import useGameQueryStore from '../store'
+import useWindowSize from '../hooks/useWindowSize'
 
 const HomePage = () => {
+  const {width} = useWindowSize()
+  const isMobile = width < 599
+  
+  const filtersOpened = useGameQueryStore(state => state.filtersOpened)
+
+  const { colorMode } = useColorMode()
+
   return (
     <Grid templateAreas={{
       base: `"main"`,
@@ -19,19 +28,51 @@ const HomePage = () => {
     }}
     >
       <Show above='lg'>
-        <GridItem area='aside' paddingX={5} position= 'fixed' top='6.5rem'>
+        <GridItem area='aside' paddingX={5} position= 'fixed' top={isMobile ? '6.5rem' : '8.5rem'}>
           <GenreList />
         </GridItem>
       </Show>
-      <GridItem area='main' 
-      >
-        <GameHeading />
-        <HStack spacing={5} paddingLeft={2} marginBottom={5} marginTop={2.5}>
-          <PlatformSelector />
-          <SortSelector />
-        </HStack>
+
+    {
+      isMobile 
+      ?
+      <GridItem area='main'>
+        <Box
+        className={filtersOpened ? "filtersContainer visible" : "filtersContainer"}
+          position='sticky'
+          top='8.5rem'
+          zIndex='100'
+          background= {colorMode === 'dark' ? 'gray.900' : 'white'}
+          
+        >
+          {filtersOpened &&  
+          <>
+          <GameHeading /><HStack spacing={ 5 } paddingLeft={ 2 } marginBottom={ 5 } marginTop={ 2.5 }>
+            <PlatformSelector />
+            <SortSelector />
+          </HStack>
+          </>
+          }
+        </Box>
         <GameGrid />
       </GridItem>
+      :
+      <GridItem area='main'>
+        <Box
+          position='sticky'
+          top='8.5rem'
+          zIndex='100'
+          height= '9rem'
+          background= {colorMode === 'dark' ? 'gray.900' : 'white'}
+        >
+          <GameHeading /><HStack spacing={ 5 } paddingLeft={ 2 } marginBottom={ 5 } marginTop={ 2.5 }>
+            <PlatformSelector />
+            <SortSelector />
+          </HStack>
+        </Box>
+        <GameGrid />
+      </GridItem>
+      }
     </Grid>
   )
 }

@@ -11,7 +11,7 @@ const GenreList = () => {
 
   return (
     <>
-      <Heading fontSize='2xl' marginBottom={8} marginTop={7}>Genres</Heading>
+      <Heading fontSize='2xl' marginBottom={8} marginTop={3}>Genres</Heading>
       <List>
         {data?.results.map(genre => 
           <ListItem key={genre.id} paddingY='5px'>

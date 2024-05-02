@@ -28,7 +28,7 @@ const TextPageSkeleton = ({ heading, text }: Props) => {
         </Show>
         <GridItem
           area='main'
-          marginRight={{ base: '0', md: '0', lg: '10rem' }}
+          marginRight={{ base: '0', md: '0', lg: '20rem' }}
         >
             <HStack
               padding={{ base: '1rem', md: '4rem' }}
