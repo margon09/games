@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import useGame from "../hooks/useGame"
 import ExpandableText from "../components/ExpandableText"
 import GameAttributes from "../components/GameAttributes"
+import GameTrailer from "../components/GameTrailer"
 
 const GameDetailsPage = () => {
   const { colorMode } = useColorMode()
@@ -33,6 +34,7 @@ const GameDetailsPage = () => {
         <GridItem
           area='main'
           marginRight={{ base: '0', md: '0', lg: '10rem' }}
+          marginTop= {{ base: '2rem', md: '0', lg: '0' }}
         >
           <HStack
             padding={{ base: '1rem', md: '4rem' }}
@@ -54,6 +56,7 @@ const GameDetailsPage = () => {
                   <Heading as='h1' width='100%'>{game.name}</Heading>
                   <ExpandableText>{game.description_raw}</ExpandableText>
                   <GameAttributes game={game}/>
+                  <GameTrailer gameId={game.id}/>
                 </>
               )}
             </VStack>
