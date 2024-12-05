@@ -11,9 +11,8 @@ interface Props {
 }
 
 const PlatformIconList = ({platforms}: Props) => {
-  // using index signature syntax
+  // index signature
   const iconMap: { [key: string]: IconType } = {
-    // name: PlayStation, slug(aka textual id): playstation
     pc: FaWindows,
     playstation: FaPlaystation,
     xbox: FaXbox,

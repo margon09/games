@@ -17,7 +17,7 @@ const SearchInput = () => {
   const { width } = useWindowSize()
   const isDesktop = width > 599
 
-  const ref = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLInputElement>(null)
   const setSearchText = useGameQueryStore((state) => state.setSearchText)
   const searchText = useGameQueryStore((state) => state.gameQuery.searchText)
   const navigate = useNavigate()
