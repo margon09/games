@@ -29,7 +29,19 @@ const HomePage = () => {
     >
       <Show above='lg'>
         <GridItem area='aside' paddingX={5} position= 'fixed' top={isMobile ? '6.5rem' : '8.5rem'}>
-          <GenreList />
+          <Box
+            maxHeight={{ base: "calc(100vh - 6.5rem)", lg: "calc(100vh - 8.5rem)" }}
+            overflowY="auto" 
+            css={{
+            scrollbarWidth: "none", 
+            "&::-webkit-scrollbar": {
+              display: "none", 
+            },
+          }}
+            paddingX={5}
+          >
+            <GenreList />
+          </Box>
         </GridItem>
       </Show>
 

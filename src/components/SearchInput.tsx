@@ -1,168 +1,131 @@
-import { ChangeEvent, FormEvent, MouseEvent } from 'react'
-import {Button, HStack, Input, InputGroup, InputLeftElement, InputRightElement, Text, useToast } from '@chakra-ui/react'
-import {  useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useRef, useEffect } from 'react'
+import {
+  Button,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Text,
+} from '@chakra-ui/react'
 import { BsSearch, BsX } from 'react-icons/bs'
 import useWindowSize from '../hooks/useWindowSize'
 import useGameQueryStore from '../store'
-import CustomToast from './UI/CustomToast'
-import useKeyboardEvents from '../hooks/useKeyboardEvents'
 import { useNavigate } from 'react-router-dom'
 
-
 const SearchInput = () => {
-  const {width} = useWindowSize()
+  const { width } = useWindowSize()
   const isDesktop = width > 599
 
-  const ref = useRef<HTMLInputElement>(null)
-  const setSearchText = useGameQueryStore(s => s.setSearchText)
-  
-  const toast = useToast()
-
+  const ref = useRef<HTMLInputElement>(null);
+  const setSearchText = useGameQueryStore((state) => state.setSearchText)
+  const searchText = useGameQueryStore((state) => state.gameQuery.searchText)
   const navigate = useNavigate()
 
-  const [isFocused, setIsFocused] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const [inputValue, setInputValue] = useState('')
-
   const handleClear = () => {
+    setSearchText('')
     if (ref.current) {
       ref.current.value = ''
-      setInputValue('')
     }
   }
-
-  useKeyboardEvents({
-    'Alt+Enter': () => {
-      if (ref.current) {
-        ref.current.focus()
-        setIsFocused(true)
-      }
-    },
-    Delete: () => {
-      if (ref.current) {
-        handleClear()
-      }
-    }
-  })
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value)
+    setSearchText(event.target.value)
   }
 
-  const showToast = () => {
-    toast({
-      position: 'top',
-      duration: 3000,
-      render: () => (
-        <CustomToast
-          title="Empty Input"
-          description="Please enter a search query."
-          isClosable={true}
-        />
-      ),
-    })
-  }
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (inputValue.trim() === '') {
-      showToast()
-    } else {
-      if (ref.current) {
-        setSearchText(inputValue)
-        navigate('/')
-      }
+    if (searchText?.trim()) {
+      navigate('/')
     }
   }
 
+  const focusInput = () => {
+    if (ref.current) {
+      ref.current.focus()
+    }
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey && event.key === 'Enter') {
+        focusInput()
+        event.preventDefault()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   return (
-    <HStack
-      marginRight={{ base: '5px', lg: '20px' }} 
-      width='100%'
-    >
+    <HStack marginRight={{ base: '5px', lg: '20px' }} width="100%">
       <form onSubmit={handleSubmit}>
-        <InputGroup marginLeft={{base: '0', md: '0.5rem'}}>
+        <InputGroup marginLeft={{ base: '0', md: '0.5rem' }}>
           <InputLeftElement
-            className='leftInputElement'
-            children={<BsSearch className='searchBtn'/>}
+            className="leftInputElement"
+            children={<BsSearch className="searchBtn" />}
           />
           <Input
             ref={ref}
-            value={inputValue}
+            value={searchText || ''}
             onChange={handleChange}
             borderRadius={17}
-            placeholder={isFocused ? '' : isDesktop ? 'Search games...' : 'Search'}
-            variant='filled'
-            focusBorderColor='blue.600'
-            _focus={{ bg: "gray.100", color: "black"}}
-            _hover={{ bg: "gray.100", color: "black", transition: 'all .5s ease-in' }}
-            transition='all .7s ease-out'
+            placeholder={isDesktop ? 'Search games...' : 'Search'}
+            variant="filled"
+            focusBorderColor="blue.600"
+            _focus={{ bg: 'gray.100', color: 'black' }}
+            _hover={{ bg: 'gray.100', color: 'black', transition: 'all .5s ease-in' }}
+            transition="all .7s ease-out"
             sx={{
               '&::placeholder': {
                 color: 'gray.500',
               },
             }}
-            onFocus={() => {
-              setIsFocused(true)
-              ref.current?.focus()
-            }}
-            onBlur={() => {
-              setIsFocused(false)
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => {
-              setIsHovered(false)
-              setIsFocused(false)
-              ref.current?.blur()
-            }}
           />
-          {
-            isDesktop ?
-              <InputRightElement className='rightInputElement1'>
-              {(isFocused || isHovered || inputValue) && (
-                <HStack gap='0.2rem'>
-                <BsX
-                  className='xBtn'
-                  onClick={handleClear}
-                  style={{ cursor: 'pointer'}}
-                />
-                  </HStack>
+          {isDesktop ? (
+            <InputRightElement className="rightInputElement1">
+              {searchText && (
+                <HStack gap="0.2rem">
+                  <BsX
+                    className="xBtn"
+                    onClick={handleClear}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </HStack>
               )}
-              {!isFocused && !isHovered && !inputValue && (
-                <HStack gap='0.2rem'>
-                  <Button
-                    className='btn1'
-                    variant="outline"
-                  >
+              {!searchText && (
+                <HStack gap="0.2rem">
+                  <Button className="btn1" variant="outline">
                     alt
                   </Button>
                   <Text>+</Text>
                   <Button
-                    className='btn2'
+                    className="btn2"
                     variant="outline"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      focusInput()
+                    }}
                   >
                     enter
                   </Button>
                 </HStack>
               )}
-              </InputRightElement>
-              :
-              <InputRightElement className='rightInputElement2'>
-                  <BsX
-                    className='xBtn'
-                    onClick={handleClear}
-                    style={{ cursor: 'pointer' }}
-                  />
-                <Button
-                  className='btn2'
-                  variant="outline"
-                  onClick={handleSubmit}
-                  style={{marginRight: '1.5rem'}}
-                >
-                  enter
-                </Button>
-              </InputRightElement>
-          }
+            </InputRightElement>
+          ) : (
+            <InputRightElement className="rightInputElement2">
+              {searchText && (
+                <BsX
+                  className="xBtn"
+                  onClick={handleClear}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+            </InputRightElement>
+          )}
         </InputGroup>
       </form>
     </HStack>
@@ -170,3 +133,4 @@ const SearchInput = () => {
 }
 
 export default SearchInput
+

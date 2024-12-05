@@ -7,6 +7,7 @@ import useWindowSize from '../hooks/useWindowSize'
 import FilterIcon from './UI/FilterIcon'
 import useGameQueryStore from '../store'
 
+
 const NavBar = () => {
   const {width} = useWindowSize()
   const isDesktop = width > 599
@@ -14,6 +15,15 @@ const NavBar = () => {
   const { colorMode } = useColorMode()
 
   const toggleFilters = useGameQueryStore(state => state.toggleFilters)
+
+  const setSearchText = useGameQueryStore((state) => state.setSearchText)
+
+  const handleHomeClick = () => {
+    setSearchText('')
+    if (document.querySelector('input')) {
+      (document.querySelector('input') as HTMLInputElement).value = ''
+    }
+  }
   
   return (
     <>
@@ -44,8 +54,8 @@ const NavBar = () => {
               justifyContent: 'center', 
               alignItems: 'center'
             }}>
-              <Link to='/'>
-                <Image src={logo}  />
+              <Link to="/" onClick={handleHomeClick}>
+                <Image src={logo} alt="Logo" />
               </Link>
             </GridItem>
           </Show>
@@ -80,7 +90,7 @@ const NavBar = () => {
                   display='flex'
                   flexDirection='row'
                 >
-                  <Link to={'/'} >
+                  <Link to="/" onClick={handleHomeClick}>
                     <Image src={logo}  style={{width: '18%'}}/>
                 </Link>
 
